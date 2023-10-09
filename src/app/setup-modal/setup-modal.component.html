@@ -1,0 +1,39 @@
+<ng-template #content let-modal data-backdrop="static">
+    <div class="modal-header">
+         <h4 class="modal-title" id="modal-basic-title">Select Airports:</h4>
+         <h5 *ngIf="!checkIcao"><span class="badge badge-warning">{{error}}</span></h5>
+    </div>
+    <div class="modal-body">
+         <form class="row" [formGroup]="setupForm">
+              <div class="row">
+                    <div class="col-6" formGroupName="dep">
+                         <div class="input-group input-group-sm mb-3">
+                              <div class="input-group-prepend">
+                                   <span class="input-group-text" id="inputGroup-sizing-sm">Departure ICAO</span>
+                              </div>
+                              <input #depIcao formControlName="depIcao" [ngClass]="{'is-invalid' : dep.invalid && (dep.dirty || dep.touched)}" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="e.g. LOWS">
+                         </div>
+                    </div>
+                    <div class="col-6" formGroupName="arr">
+                         <div class="input-group input-group-sm mb-3">
+                              <div class="input-group-prepend">
+                                   <span class="input-group-text" id="inputGroup-sizing-sm">Arrival ICAO</span>
+                              </div>
+                              <input #arrIcao formControlName="arrIcao" [ngClass]="{'is-invalid' : arr.invalid && (arr.dirty || arr.touched)}" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="e.g. LOWW">
+                         </div>
+                    </div>
+                    <div class="col-6" formGroupName="alt">
+                         <div class="input-group input-group-sm mb-3">
+                              <div class="input-group-prepend">
+                                   <span class="input-group-text" id="inputGroup-sizing-sm">Alternate ICAO</span>
+                              </div>
+                              <input #altIcao formControlName="altIcao" [ngClass]="{'is-invalid' : alt.invalid && (alt.dirty || alt.touched)}" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="e.g. LOWI">
+                         </div>
+                    </div>
+               </div>
+         </form>
+    </div>
+    <div class="modal-footer">
+         <button type="button" class="btn btn-outline-dark" (click)="verifyAirports()" [disabled]="!setupForm.valid">Start</button>
+    </div>
+</ng-template>

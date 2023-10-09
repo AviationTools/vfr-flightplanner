@@ -1,0 +1,194 @@
+<ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
+    <ngb-panel>
+        <ng-template ngbPanelHeader let-opened="opened">
+            <div>
+                <div class="row">
+                    <div class="col-1">
+                        <div class="d-flex justify-content-center">
+                            <button class="btn btn-primary-outline btn-lg pull-right toggle" ngbPanelToggle (click)="toggleCollapse()"><i [className]="iconClass"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-11">
+                        <button *ngIf="!planSent" class="btn btn-primary btn-block" type="submit" (click)="sendHeaderDataToHome()" [disabled]="!submitReady">Calculate Flightplan</button>
+                        
+                        <button *ngIf="loading" class="btn btn-primary btn-block" type="submit">
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </button>
+                        
+                        <button *ngIf="planRecieved" class="btn btn-primary btn-block" type="submit" (click)="refresh()">New Flightplan</button>
+                        <h5 *ngIf="!headerForm.valid"><span class="badge badge-warning w-100">Please fill in the header informations</span></h5>
+                        <h5 *ngIf="!tableReady"><span class="badge badge-warning w-100">Please fill in the flightplan informations</span></h5>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template ngbPanelContent>
+            <form [formGroup]="headerForm">
+                <div class="form-row">
+                    <div class="col-3">
+                        <div class="mt-2">
+                            <table class="table">
+                                <tbody>
+                                        <tr>
+                                            <th class="p-0 text-center">Date:</th>
+                                            <td class="p-0 text-center"><input type="date" class="form-control text-center" aria-label="Small" aria-describedby="inputGroup-sizing-sm"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-0 text-center">1. Pilot:</th>
+                                            <td class="p-0 text-center"><input type="text" class="form-control text-center" aria-label="Small" aria-describedby="inputGroup-sizing-sm"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-0 text-center">2. Pilot/Fl:</th>
+                                            <td class="p-0 text-center"><input type="text" class="form-control text-center" aria-label="Small" aria-describedby="inputGroup-sizing-sm"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-0 text-center">Aircraft Type:</th>
+                                            <td class="p-0 text-center"><input type="text" class="form-control text-center" aria-label="Small" aria-describedby="inputGroup-sizing-sm"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-0 text-center">A/C Regestration:</th>
+                                            <td class="p-0 text-center"><input type="text" class="form-control text-center" aria-label="Small" aria-describedby="inputGroup-sizing-sm"></td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            
+                    <div class="col-3">
+                        <div class="mt-2">
+                            <table class="table">
+                                <tbody>
+                                        <tr>
+                                            <th class="p-0 text-center">Block OFF Time:</th>
+                                            <td class="p-0 text-center"><input type="time" class="form-control text-center" aria-label="Small" aria-describedby="inputGroup-sizing-sm"></td>
+                                            <th class="p-0 text-center">FLIGHT TIME</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-0 text-center">Departure Time:</th>
+                                            <td class="p-0 text-center"><input type="time" class="form-control text-center" aria-label="Small" aria-describedby="inputGroup-sizing-sm"></td>
+                                            <td class="p-0 text-center"><input type="time" class="form-control text-center" aria-label="Small" aria-describedby="inputGroup-sizing-sm"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-0 text-center">Landing Time:</th>
+                                            <td class="p-0 text-center"><input type="time" class="form-control text-center" aria-label="Small" aria-describedby="inputGroup-sizing-sm"></td>
+                                            <th class="p-0 text-center">BLOCK TIME</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-0 text-center">Block ON Time:</th>
+                                            <td class="p-0 text-center"><input type="time" class="form-control text-center" aria-label="Small" aria-describedby="inputGroup-sizing-sm"></td>
+                                            <td class="p-0 text-center"><input type="time" class="form-control text-center" aria-label="Small" aria-describedby="inputGroup-sizing-sm"></td>
+                                        </tr>   
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="mt-2 mr-5">
+                            <table class="table">
+                                <thead>
+                                        <tr>
+                                            <th class="p-0 text-center">Departure</th>
+                                            <th class="p-0 text-center">Landing</th>
+                                            <th class="p-0 text-center">Alternate</th>
+                                        </tr>
+                                </thead>
+                                <tbody formGroupName="runwaySpecs">
+                                        <tr>
+                                            <th class="p-0 text-center">RWY</th>
+                                            <th class="p-0 text-center">RWY</th>
+                                            <th class="p-0 text-center">RWY</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-0"><input type="text" class="form-control form-control-sm" placeholder="runway" formControlName="rwyDep" disabled></td>
+                                            <td class="p-0"><input type="text" class="form-control form-control-sm" placeholder="runway" formControlName="rwyArr" disabled></td>
+                                            <td class="p-0"><input type="text" class="form-control form-control-sm" placeholder="runway" formControlName="rwyAlt" disabled></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-0 text-center">TORA</th>
+                                            <th class="p-0 text-center">LDA</th>
+                                            <th class="p-0 text-center">LDA</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-0"><input type="number" class="form-control form-control-sm" placeholder="meter" formControlName="depRwyLength" disabled></td>
+                                            <td class="p-0"><input type="number" class="form-control form-control-sm" placeholder="meter" formControlName="arrRwyLength" disabled></td>
+                                            <th class="p-0"><input type="number" class="form-control form-control-sm" placeholder="meter" formControlName="altRwyLength" disabled></th>
+                                        </tr>    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="row mt-2">
+                            <div class="col-6">
+                                <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th class="p-0 text-center">TAS</th>
+                                                <th class="p-0 text-center">FF</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr formGroupName="vr">
+                                                <td class="p-0"><input type="number" [ngClass]="{'is-invalid' : vr.invalid}" class="form-control form-control-sm" formControlName="kt" aria-label="Small" placeholder="kt"></td>
+                                                <td class="p-0"><input type="number" [ngClass]="{'is-invalid' : vr.invalid}" class="form-control form-control-sm" formControlName="lhr" aria-label="Small" placeholder="l/hr"></td>
+                                                <th class="p-0 text-center">VR</th>
+                                            </tr>
+                                            <tr formGroupName="climb">
+                                                <td class="p-0"><input type="number" [ngClass]="{'is-invalid' : climb.invalid}" class="form-control form-control-sm" formControlName="kt" aria-label="Small" placeholder="kt"></td>
+                                                <td class="p-0"><input type="number" [ngClass]="{'is-invalid' : climb.invalid}" class="form-control form-control-sm" formControlName="lhr" aria-label="Small" placeholder="l/hr"></td>
+                                                <th class="p-0 text-center">Climb</th>
+                                            </tr>
+                                            <tr formGroupName="cruise">
+                                                <td class="p-0"><input type="number" [ngClass]="{'is-invalid' : cruise.invalid}" class="form-control form-control-sm" formControlName="kt" aria-label="Small" placeholder="kt"></td>
+                                                <td class="p-0"><input type="number" [ngClass]="{'is-invalid' : cruise.invalid}" class="form-control form-control-sm" formControlName="lhr" aria-label="Small" placeholder="l/hr"></td>
+                                                <th class="p-0 text-center">Cruise</th>
+                                            </tr>
+                                            <tr formGroupName="app">
+                                                <td class="p-0"><input type="number" [ngClass]="{'is-invalid' : app.invalid}" class="form-control form-control-sm" formControlName="kt" aria-label="Small" placeholder="kt"></td>
+                                                <td class="p-0"><input type="number" [ngClass]="{'is-invalid' : app.invalid}" class="form-control form-control-sm" formControlName="lhr" aria-label="Small" placeholder="l/hr"></td>
+                                                <th class="p-0 text-center">Approach</th>
+                                            </tr>    
+                                        </tbody>
+                                </table>
+                            </div>
+                            <div class="col-6">
+                                <table class="table mt-2">
+                                    <tbody formGroupName="vspeeds">
+                                        <tr>
+                                            <th class="p-1">Vs0</th>
+                                            <td class="p-0"><input type="number" [ngClass]="{'is-invalid' : vspeeds.invalid}" class="form-control form-control-sm" formControlName="vs0" aria-label="Small" placeholder="kt"></td>
+                                            <th class="p-1">Vx</th>
+                                            <td class="p-0"><input type="number" [ngClass]="{'is-invalid' : vspeeds.invalid}" class="form-control form-control-sm" formControlName="vx" aria-label="Small" placeholder="kt"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-1">Vs1</th>
+                                            <td class="p-0"><input type="number" [ngClass]="{'is-invalid' : vspeeds.invalid}" class="form-control form-control-sm" formControlName="vs1" aria-label="Small" placeholder="kt"></td>
+                                            <th class="p-1">Vy</th>
+                                            <td class="p-0"><input type="number" [ngClass]="{'is-invalid' : vspeeds.invalid}" class="form-control form-control-sm" formControlName="vy" aria-label="Small" placeholder="kt"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-1">Va</th>
+                                            <td class="p-0"><input type="number" [ngClass]="{'is-invalid' : vspeeds.invalid}" class="form-control form-control-sm" formControlName="va" aria-label="Small" placeholder="kt"></td>
+                                            <th class="p-1">Vfe</th>
+                                            <td class="p-0"><input type="number" [ngClass]="{'is-invalid' : vspeeds.invalid}" class="form-control form-control-sm" formControlName="vfe" aria-label="Small" placeholder="kt"></td>
+                                        </tr>
+                                        <tr>
+                                            <th class="p-1">V/S</th>
+                                            <td class="p-0"><input type="number" [ngClass]="{'is-invalid' : vspeeds.invalid}" class="form-control form-control-sm" formControlName="vs" aria-label="Small" placeholder="ft/min"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </ng-template>
+    </ngb-panel>
+</ngb-accordion>
+
+<app-table
+    #table (removeWaypoint)='removeWaypointHeaderToHome($event)' (getTableObject)='getTableObjectHeaderToHome($event)'>
+</app-table>

@@ -1,0 +1,49 @@
+<form [formGroup]="tableForm">
+     <table class="table table-striped mt-3" #tableHTML>
+          <thead>
+               <tr>
+                    <th>Waypoint</th>
+                    <th>Frequency</th>
+                    <th>Altitude/Fl</th>
+                    <th>Wind</th>
+                    <th>TT</th>
+                    <th>WCA</th>
+                    <th>TH</th>
+                    <th>VAR</th>
+                    <th>MH</th>
+                    <th>TAS</th>
+                    <th>GS</th>
+                    <th>Distance</th>
+                    <th>Time</th>
+                    <th>Time ACC</th>
+                    <th>ETO</th>
+                    <th>Fuel Flow</th>
+                    <th>Power Setting</th>
+                    <th></th>
+               </tr>
+          </thead>
+          <tbody formArrayName="table">
+               <tr *ngFor="let data of table.controls; let i=index" [formGroupName]="i">
+                    <td><input type="text" class="form-control form-control-sm text-center" aria-label="Small" placeholder="name" formControlName="wyp"></td>
+                    <td><input type="number" class="form-control form-control-sm text-center" aria-label="Small" placeholder="mhz" formControlName="freq"></td>
+                    <td><input type="number" class="form-control form-control-sm text-center" aria-label="Small" placeholder="feet" formControlName="alt"></td>
+                    <td><input type="text" class="form-control form-control-sm text-center bg-muted" aria-label="Small" placeholder="&deg;/kt" formControlName="wind" disabled></td>
+                    <td><input type="number" class="form-control form-control-sm text-center bg-muted" aria-label="Small" placeholder="&deg;" formControlName="tt" disabled></td>
+                    <td><input type="number" class="form-control form-control-sm text-center bg-muted" aria-label="Small" placeholder="&deg;" formControlName="wca" disabled></td>
+                    <td><input type="number" class="form-control form-control-sm text-center bg-muted" aria-label="Small" placeholder="&deg;" formControlName="th" disabled></td>
+                    <td><input type="number" class="form-control form-control-sm text-center bg-muted" aria-label="Small" placeholder="&deg;" formControlName="var" disabled></td>
+                    <td><input type="number" class="form-control form-control-sm text-center bg-muted" aria-label="Small" placeholder="&deg;" formControlName="mh" disabled></td>
+                    <td><input type="number" class="form-control form-control-sm text-center bg-muted" aria-label="Small" placeholder="kt" formControlName="tas" disabled></td>
+                    <td><input type="number" class="form-control form-control-sm text-center bg-muted" aria-label="Small" placeholder="kt" formControlName="gs" disabled></td>
+                    <td><input type="number" class="form-control form-control-sm text-center bg-muted" aria-label="Small" placeholder="nm" formControlName="dist" disabled></td>
+                    <td><input type="text" class="form-control form-control-sm text-center bg-muted" aria-label="Small" placeholder="utc" formControlName="time" disabled></td>
+                    <td><input type="text" class="form-control form-control-sm text-center bg-muted" aria-label="Small" placeholder="utc" formControlName="timeAcc" disabled></td>
+                    <td><input type="text" class="form-control form-control-sm text-center bg-muted" aria-label="Small" placeholder="utc" formControlName="eto" disabled></td>
+                    <td><input type="number" class="form-control form-control-sm text-center bg-muted" aria-label="Small" placeholder="gal/h" formControlName="ff" disabled></td>
+                    <td><input type="number" class="form-control form-control-sm text-center" aria-label="Small" placeholder="rpm" disabled></td>
+                    <td><button *ngIf="!planSent" type="button" class="btn btn-warning btn-sm" (click)="removeWaypointFromTable(data, i)">X</button></td>
+               </tr>
+          </tbody>
+     </table>
+</form>
+<button class="btn btn-success btn-block" (click)="createPDF()" *ngIf="!loaded">Download PDF</button>

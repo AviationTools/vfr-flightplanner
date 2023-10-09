@@ -1,0 +1,27 @@
+<div class="row">
+     <div class="col-12">
+          <div leaflet style="height: 600px;" 
+               [leafletOptions]="options"
+               (leafletMapReady)="onMapReady($event)"
+               (leafletDoubleClick)="newWaypointSet($event)">
+               <div *ngFor="let l of custumWaypoints" [leafletLayer]="l"></div>
+               <div *ngFor="let l of custumPolylines" [leafletLayer]="l"></div>
+               <div *ngFor="let l of specialPolylines" [leafletLayer]="l"></div>
+               <div *ngFor="let l of specialWaypoints" [leafletLayer]="l"></div>
+               <div *ngFor="let l of mandatoryWaypoints" [leafletLayer]="l"></div>
+               <div *ngFor="let l of compulsoryWaypoints" [leafletLayer]="l"></div>
+          </div>
+     </div>
+</div>
+
+<hr>
+
+<div>
+     <app-header 
+          #header
+          [depData]="depData" [arrData]="arrData" [altData]="altData" 
+          (getHeaderData)='getHeaderData($event)' (removeWaypoint)='removeWaypoint($event)'>
+     </app-header>
+</div>
+
+<app-setup-modal (setRunwayData)='setRunwayData($event)'></app-setup-modal>

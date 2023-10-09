@@ -1,0 +1,48 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+code {
+  color: #e01a76;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+
+.input-group-text {
+  background-color:#d12c6e; 
+  color: white;
+}
+
+th {
+  background-color:#d12c6e; 
+  color: white;
+  text-align: center;
+}
+
+td {
+  text-align: center;
+}
+
+.icon-down{
+  background-image : url(./assets/icon/caret-square-down-solid.svg);
+  background-size: cover;
+  display: inline-block;
+  height: 35px;
+  width: 35px;
+}
+
+.icon-up{
+  background-image : url(./assets/icon/caret-square-up-solid.svg);
+  background-size: cover;
+  display: inline-block;
+  height: 35px;
+  width: 35px;
+}
